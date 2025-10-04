@@ -1,85 +1,65 @@
+# pages/3_🤖_AI_Chatbot.py
+
 import streamlit as st
 import google.generativeai as genai
-import os
 
-# --- Konfigurasi Halaman dan Judul ---
-st.set_page_config(
-    page_title="Kopi.AI Chatbot",
-    page_icon="☕️",
-    layout="centered"
-)
+# --- Konfigurasi Halaman ---
+st.set_page_config(page_title="PIKOPI - AI Chatbot", page_icon="🤖")
+st.title("🤖 AI Chatbot PIKOPI")
+st.caption("Tanya apa saja tentang dunia kopi!")
 
-st.title("Kopi.AI Chatbot ☕️")
-st.caption("Tahap 1: Asisten Kopi Cerdas Berbasis Gemini 1.5 Flash")
+# --- FUNGSI UNTUK MENGAMBIL API KEY DENGAN AMAN ---
+def get_google_api_key():
+    """
+    Mengambil API key dari st.secrets jika di-deploy.
+    Fungsi ini akan memudahkan pengujian lokal juga.
+    """
+    try:
+        return st.secrets["GOOGLE_API_KEY"]
+    except (FileNotFoundError, KeyError):
+        return None
 
-# --- Konfigurasi API Key di Sidebar ---
-with st.sidebar:
-    st.header("Konfigurasi")
-    # Cara yang lebih aman untuk deployment: gunakan st.secrets
-    # Tapi untuk pengembangan lokal, text_input sudah cukup.
-    google_api_key = st.text_input(
-        "Masukkan Google API Key Anda:", 
-        type="password",
-        help="Dapatkan API key Anda dari Google AI Studio."
-    )
-    if not google_api_key:
-        st.info("Mohon masukkan API Key Anda untuk memulai percakapan.")
-        st.stop()
-    
-    # Tombol untuk memulai percakapan baru
-    if st.button("Mulai Percakapan Baru"):
-        # Hapus history dari session state
-        st.session_state.messages = []
-        st.session_state.chat = None
-        st.rerun()
+# --- Konfigurasi API Key ---
+GOOGLE_API_KEY = get_google_api_key()
 
-# Konfigurasi model Generative AI setelah API key dimasukkan
-try:
-    genai.configure(api_key=google_api_key)
-except Exception as e:
-    st.error(f"Konfigurasi API gagal. Periksa kembali API Key Anda. Error: {e}")
+if not GOOGLE_API_KEY:
+    st.error("Google API Key tidak dikonfigurasi. Mohon atur di secrets management Streamlit.")
+    st.info("Jika Anda menjalankan ini secara lokal, buat file .streamlit/secrets.toml")
     st.stop()
 
-# --- Inisialisasi Model dan Session State ---
+# Konfigurasi model Generative AI
+try:
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-2.5-flash')
+except Exception as e:
+    st.error(f"Konfigurasi API gagal. Periksa kembali API Key Anda di secrets. Error: {e}")
+    st.stop()
 
-# Inisialisasi model Gemini
-model = genai.GenerativeModel('gemini-2.5-flash')
-
-# Inisialisasi session state untuk menyimpan history percakapan
+# --- Logika Chat ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Inisialisasi objek chat jika belum ada
-if "chat" not in st.session_state or st.session_state.chat is None:
-    st.session_state.chat = model.start_chat(history=[])
+if "chat_session" not in st.session_state:
+    st.session_state.chat_session = model.start_chat(history=[])
 
-
-# --- Tampilkan History Percakapan ---
+# Tampilkan history
 for message in st.session_state.messages:
-    # Tampilkan pesan dari history dengan role yang sesuai
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-
-# --- Input dari Pengguna dan Respon dari Model ---
-if prompt := st.chat_input("Tanya apa saja tentang kopi..."):
-    # 1. Tambahkan dan tampilkan pesan pengguna ke UI
+# Input dari pengguna
+if prompt := st.chat_input("Apa yang ingin Anda ketahui tentang kopi?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # 2. Kirim prompt ke model Gemini dan dapatkan responnya
     try:
-        with st.spinner("Kopi.AI sedang berpikir... 🤔"):
-            # Gunakan objek chat yang sudah ada untuk mengirim pesan
-            # Ini akan otomatis menjaga konteks percakapan
-            response = st.session_state.chat.send_message(prompt)
+        with st.spinner("PIKOPI sedang meracik jawaban..."):
+            response = st.session_state.chat_session.send_message(prompt)
+            assistant_response = response.text
         
-        # 3. Tambahkan dan tampilkan respon dari model
-        assistant_response = response.text
         st.session_state.messages.append({"role": "assistant", "content": assistant_response})
         with st.chat_message("assistant"):
             st.markdown(assistant_response)
-            
     except Exception as e:
-        st.error(f"Terjadi kesalahan saat berkomunikasi dengan AI: {e}")
+        st.error(f"Maaf, terjadi kesalahan: {e}")
