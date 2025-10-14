@@ -1,0 +1,17 @@
+# .streamlit/config.toml
+
+[theme]
+# Warna utama untuk elemen interaktif seperti tombol, slider, dll.
+primaryColor = "#8D5B4C"  # Coklat medium (seperti warna biji kopi sangrai)
+
+# Warna latar belakang utama
+backgroundColor = "#FFF8F0"  # Krem muda (seperti warna kertas filter)
+
+# Warna latar belakang untuk elemen seperti sidebar dan expander
+secondaryBackgroundColor = "#F0E7DB" # Krem sedikit lebih gelap
+
+# Warna teks utama
+textColor = "#4B3832"  # Coklat tua (seperti warna kopi seduhan)
+
+# Font yang digunakan. Bisa 'sans serif', 'serif', atau 'monospace'.
+font = "sans serif"

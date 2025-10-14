@@ -4,9 +4,15 @@ import streamlit as st
 
 # Konfigurasi halaman utama
 st.set_page_config(
-    page_title="PIKOPI - Dashboard Utama",
-    page_icon="☕️",
-    layout="wide"
+    page_title="PIKOPI - Platform Kopi Cerdas", # Judul yang muncul di tab browser
+    page_icon="☕️",                         # Ikon di tab browser 
+    layout="wide",                          # "centered" (default) atau "wide"
+    initial_sidebar_state="expanded",       # "auto", "expanded", atau "collapsed"
+    menu_items={                            # Kustomisasi menu di pojok kanan atas
+        'Get Help': 'https://www.github.com/your_repo',
+        'Report a bug': "https://www.github.com/your_repo/issues",
+        'About': "# Ini adalah aplikasi PIKOPI, dibuat dengan Streamlit!"
+    }
 )
 
 # Judul dan deskripsi dashboard
