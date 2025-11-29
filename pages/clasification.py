@@ -1,6 +1,31 @@
 import streamlit as st
+import requests
 
-st.set_page_config(page_title="Klasifikasi Biji Kopi", page_icon="📷")
-st.title("📷 Klasifikasi Kualitas Biji Kopi")
-st.info("Fitur ini sedang dalam pengembangan dan akan segera tersedia!")
-st.image("https://images.unsplash.com/photo-1599160537538-6a3456f452a2?q=80&w=2070", caption="Analisis Biji Kopi Hijau")
+API_URL = "http://localhost:8000/predict"
+
+st.title("☕ Kikoopi Bean Classifier")
+st.write("Upload gambar biji kopi untuk diprediksi")
+
+uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+
+if uploaded_file:
+    st.image(uploaded_file, caption="Uploaded Image")
+
+    if st.button("Predict"):
+        files = {
+            "file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)
+        }
+
+        try:
+            res = requests.post(API_URL, files=files)
+
+            if res.status_code == 200:
+                data = res.json()
+                st.success(f"Prediction: **{data['predicted_class']}**")
+                st.json(data["probabilities"])
+            else:
+                st.error(f"Prediction failed! Status Code: {res.status_code}")
+                st.json(res.text)
+
+        except Exception as e:
+            st.error(f"Error: {str(e)}")

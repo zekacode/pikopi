@@ -1,2 +1,8 @@
 streamlit
 google-generativeai
+Pillow
+tensorflow
+fastapi
+uvicorn
+numpy
+python-multipart
