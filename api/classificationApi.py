@@ -6,6 +6,11 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 import io
 import os
+import logging
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+logging.getLogger('tensorflow').setLevel(logging.FATAL)
+
 app = FastAPI()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,7 +18,7 @@ MODEL_DIR = os.path.join(BASE_DIR, "best_model.keras")
 
 model = load_model(MODEL_DIR)
 
-CLASS_NAMES = ["defect", "peaberry", "longberry", "premium"]
+CLASS_NAMES = ["defect", "longberry", "peaberry", "premium"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,13 +41,14 @@ async def predict_image(file: UploadFile = File(...)):
     try:
         content = await file.read()
         x = preprocess_image(content)
-        preds = model.predict(x)
-
-        predicted_class = CLASS_NAMES[int(tf.argmax(preds[0]))]
+        preds = model.predict(x, verbose=0)
+        predicted_index = int(tf.argmax(preds[0]))
+        confidence_value = preds[0][predicted_index].item() * 100
+        predicted_class = CLASS_NAMES[predicted_index]
 
         return JSONResponse({
             "predicted_class": predicted_class,
-            "probabilities": preds[0].tolist()
+            "confidence": f"{confidence_value:.2f}%"
         })
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
