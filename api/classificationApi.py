@@ -37,8 +37,10 @@ def preprocess_image(file_bytes):
     return image
 
 @app.get("/")
-async def root():
+def read_root():
     return {"message": "Welcome to the Kikoopi Bean Classifier API"}
+
+
 @app.post("/predict")
 async def predict_image(file: UploadFile = File(...)):
     try:
