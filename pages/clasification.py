@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://localhost:8000/predict"
+API_URL = "https://pikopi-zpnc533gx7lf9fzd7jiqu9.streamlit.app//predict"
 
 st.title("☕ Kikoopi Bean Classifier")
 st.write("Upload gambar biji kopi untuk diprediksi")
