@@ -7,16 +7,19 @@ from tensorflow.keras.models import load_model
 import io
 import os
 import logging
+from huggingface_hub import hf_hub_download
+from tensorflow import keras
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 app = FastAPI()
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_DIR = os.path.join(BASE_DIR, "best_model.keras")
+model_path = hf_hub_download(
+    repo_id="ikadekranggaa/coffe-bean-classifier",
+    filename="best_model.keras",
+)
 
-model = load_model(MODEL_DIR)
+model = keras.models.load_model(model_path)
+
 
 CLASS_NAMES = ["defect", "longberry", "peaberry", "premium"]
 

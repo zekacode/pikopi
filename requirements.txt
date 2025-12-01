@@ -6,3 +6,4 @@ fastapi
 uvicorn
 numpy
 python-multipart
+huggingface_hub
