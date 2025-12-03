@@ -13,6 +13,7 @@ Key Features:
 
 Author: Putrawin Adha Muzakki
 """
+
 import streamlit as st
 import sys
 import os
@@ -23,26 +24,29 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
-# --- PERBAIKAN PATH IMPORT (CRITICAL FIX) ---
-# Ambil lokasi file ini berada (yaitu folder 'pages')
+# --- PATH CONFIGURATION (CRITICAL FIX) ---
+# Ensures Python can locate the 'modules' package even when running from the 'pages' directory.
+# This is essential for Streamlit Cloud deployment.
+
+# Get the directory of the current file (pages/)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-# Naik satu level ke root project (yaitu folder 'pikopi')
+# Navigate one level up to the project root (pikopi/)
 root_dir = os.path.dirname(current_dir)
 
-# Masukkan root_dir ke sys.path agar folder 'modules' terbaca sebagai package
+# Add root directory to sys.path if not already present
 if root_dir not in sys.path:
     sys.path.append(root_dir)
 
-# Sekarang import tools dari modules
+# Import tools from the custom module
 try:
     from modules.chatbot.tools import tools_list
 except ImportError as e:
-    st.error(f"Gagal mengimport tools: {e}. Pastikan folder 'modules' memiliki file __init__.py")
+    st.error(f"Failed to import tools: {e}. Ensure the 'modules' folder contains an __init__.py file.")
     st.stop()
 
 # --- 1. LOGGING CONFIGURATION ---
 # Configures the logging system to capture runtime events and errors.
-# Logs are saved to 'pikopi.log' for debugging and printed to the console.
+# Logs are saved to 'pikopi.log' with UTF-8 encoding to support emojis.
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -62,27 +66,26 @@ st.set_page_config(
 )
 
 # --- 3. CUSTOM CSS STYLING ---
-# Injects custom CSS to improve the UI/UX (rounded chat bubbles, link colors).
-# --- CSS CUSTOM (DARK MODE SUPPORT) ---
+# Injects custom CSS to improve the UI/UX (Dark Mode Support).
 st.markdown("""
 <style>
-    /* Bubble Chat User - Warna Coklat Medium */
+    /* User Chat Bubble - Medium Brown */
     .stChatMessage[data-testid="stChatMessageUser"] {
         background-color: #3E322C; 
         color: #E6D7C3;
     }
     
-    /* Bubble Chat Assistant - Transparan/Default Dark */
+    /* Assistant Chat Bubble - Transparent/Default Dark */
     .stChatMessage[data-testid="stChatMessageAssistant"] {
         background-color: transparent;
     }
 
-    /* Warna Judul H1 - Mengikuti Primary Color */
+    /* Header Title Color - Primary Theme Color */
     h1 {
         color: #D4A373 !important;
     }
     
-    /* Link Google Maps - Warna Emas/Terang agar terbaca */
+    /* Google Maps Link Styling - Gold/Bright for visibility */
     a {
         color: #F4A261 !important;
         font-weight: bold;
@@ -106,15 +109,15 @@ def get_agent():
         agent_executor: The compiled LangGraph agent ready for invocation.
     """
     try:
-        # Load API Keys from local secrets.toml or Streamlit Cloud secrets
-        # Kita gunakan root_dir yang sudah kita definisikan di atas agar path aman
+        # Load API Keys securely.
+        # We use 'root_dir' to construct the path, ensuring it works regardless of the execution context.
         local_secrets_path = os.path.join(root_dir, ".streamlit", "secrets.toml")
         
         if os.path.exists(local_secrets_path):
             secrets = toml.load(local_secrets_path)
             os.environ["GOOGLE_API_KEY"] = secrets["GOOGLE_API_KEY"]
         else:
-            # Fallback ke Streamlit Cloud Secrets (Environment Variables)
+            # Fallback to Streamlit Cloud Secrets (Environment Variables)
             os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
         
         logger.info("Agent initialized successfully.")
@@ -134,7 +137,7 @@ agent_executor = get_agent()
 # --- 5. SIDEBAR UI ---
 with st.sidebar:
     st.title("PIKOPI ☕")
-    st.markdown("Klik Di sini untuk reset chat dan memulai percakapan baru.")
+    st.markdown("Click here to reset the chat and start a new conversation.")
     
     # Reset Button: Clears session state to start a new conversation
     if st.button("🗑️ Reset Chat"):
@@ -174,7 +177,6 @@ Kakak biasanya lebih suka yang mana nih?"
 
 User: "Cariin cafe di Bandung dong"
 PIKOPI: "Siap! Bandung mah surganya kopi. Kakak lagi di daerah mana? Atau mau cari yang suasananya sejuk buat healing?"
-
 
 BATASAN TOPIK (GUARDRAILS):
 - Kamu HANYA boleh menjawab pertanyaan seputar: Kopi, Cafe, Teh, Alat Seduh, dan Industri F&B terkait.

@@ -34,6 +34,8 @@ from google import genai
 from google.genai import types
 
 # --- 1. LOGGING SETUP ---
+# Configures logging to capture runtime events and errors.
+# Logs are saved to 'pikopi.log' with UTF-8 encoding to support emojis.
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -47,17 +49,19 @@ logger = logging.getLogger(__name__)
 logger.info("🔧 Initializing tools module...")
 
 # --- 2. CONFIGURATION & SECRETS (UPDATED PATHS) ---
-# BASE_DIR = Lokasi file tools.py ini berada (pikopi/modules/chatbot)
+# Dynamically determine paths to ensure compatibility across different environments.
+
+# BASE_DIR = Location of this file (pikopi/modules/chatbot)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# ROOT_DIR = Lokasi folder utama proyek (pikopi/)
-# Kita naik 2 level ke atas: modules/chatbot/ -> modules/ -> pikopi/
+# ROOT_DIR = Project root directory (pikopi/)
+# We navigate 2 levels up: modules/chatbot/ -> modules/ -> pikopi/
 ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 
-# Path ke Secrets (Ada di folder .streamlit di ROOT)
+# Path to Secrets (Located in .streamlit folder at ROOT)
 SECRETS_PATH = os.path.join(ROOT_DIR, ".streamlit", "secrets.toml")
 
-# Path ke Corrections JSON (Ada di dalam knowledge_base di sebelah tools.py)
+# Path to Corrections JSON (Located in knowledge_base next to tools.py)
 CORRECTIONS_PATH = os.path.join(BASE_DIR, "knowledge_base", "corrections.json")
 
 GOOGLE_API_KEY = None
@@ -65,7 +69,7 @@ QDRANT_URL = None
 QDRANT_API_KEY = None
 
 try:
-    # Cek apakah file secrets lokal ada
+    # Check if local secrets file exists
     if os.path.exists(SECRETS_PATH):
         secrets = toml.load(SECRETS_PATH)
         GOOGLE_API_KEY = secrets["GOOGLE_API_KEY"]
@@ -73,15 +77,15 @@ try:
         QDRANT_API_KEY = secrets["QDRANT_API_KEY"]
         logger.info(f"✅ Secrets loaded from local file: {SECRETS_PATH}")
     else:
-        # Fallback untuk Streamlit Cloud (menggunakan st.secrets)
-        # Kita import streamlit hanya untuk ambil secrets jika lokal tidak ada
+        # Fallback for Streamlit Cloud (using st.secrets environment variables)
+        # We import streamlit here only to access secrets if local file is missing
         import streamlit as st
         GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
         QDRANT_URL = st.secrets["QDRANT_URL"]
         QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
         logger.info("✅ Secrets loaded from Streamlit Cloud environment.")
     
-    # Set env var for LangChain components
+    # Set env var for LangChain components that require it implicitly
     os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
 except Exception as e:
@@ -89,7 +93,10 @@ except Exception as e:
 
 # --- Helper Function to Load Corrections ---
 def load_corrections():
-    """Membaca data koreksi dari JSON agar tidak hardcoded di script"""
+    """
+    Loads correction data from JSON file.
+    This allows us to inject specific facts (Context Injection) without hardcoding them in Python.
+    """
     try:
         if os.path.exists(CORRECTIONS_PATH):
             with open(CORRECTIONS_PATH, 'r', encoding='utf-8') as f:
@@ -98,13 +105,14 @@ def load_corrections():
             logger.warning(f"⚠️ Corrections file not found at: {CORRECTIONS_PATH}")
             return {}
     except Exception as e:
-        logger.error(f"Gagal memuat corrections.json: {e}")
+        logger.error(f"Failed to load corrections.json: {e}")
         return {}
 
-# Load corrections data globally
+# Load corrections data globally to avoid repeated I/O operations
 CORRECTION_DATA = load_corrections()
 
 # --- 3. GLOBAL CLIENT INITIALIZATION ---
+# Initialize clients once to optimize performance.
 embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 
@@ -113,26 +121,32 @@ client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 @tool
 def retrieve_coffee_knowledge(query: str) -> str:
     """
-    Gunakan alat ini untuk menjawab pertanyaan TEORI tentang kopi.
+    Use this tool to answer THEORETICAL questions about coffee.
+    Examples: History, brewing methods, bean types.
     """
     logger.info(f"TOOL_USE: retrieve_coffee_knowledge | Query: {query}")
     
-    # --- 1. CONTEXT INJECTION (DARI JSON) ---
+    # --- 1. CONTEXT INJECTION (FROM JSON) ---
+    # Checks if the query contains keywords that need clarification (e.g., Tool vs Method).
     injected_context = ""
     search_query = query
     
-    # Cek setiap kata kunci di JSON
-    # Load corrections
     for key, correction_text in CORRECTION_DATA.items():
         if key in query.lower():
             injected_context += f"\n[FAKTA PENTING: {correction_text}]\n"
+            # Enrich search query for better retrieval
             if "metode" in query.lower():
                 search_query += " method technique brewing"
     
     try:
-        vector_store = QdrantVectorStore(client=client, collection_name="pikopi_knowledge", embedding=embeddings)
+        vector_store = QdrantVectorStore(
+            client=client, 
+            collection_name="pikopi_knowledge", 
+            embedding=embeddings
+        )
         
-        # Threshold 0.55
+        # --- 2. SIMILARITY SEARCH WITH THRESHOLD ---
+        # We use a threshold (0.50) to filter out irrelevant documents.
         results = vector_store.similarity_search_with_score(search_query, k=3)
         
         valid_docs = []
@@ -140,15 +154,16 @@ def retrieve_coffee_knowledge(query: str) -> str:
             if score > 0.50: 
                 valid_docs.append(doc.page_content)
         
-        # --- LOGIKA PERBAIKAN ---
+        # --- 3. FALLBACK LOGIC ---
         if not valid_docs:
-            # Jika Qdrant kosong TAPI ada info di JSON, tampilkan info JSON-nya
+            # If Qdrant returns nothing BUT we have injected context from JSON, return the JSON info.
             if injected_context:
                 return f"Saya belum memiliki artikel lengkap tentang ini, tapi berikut fakta pentingnya:\n{injected_context}"
             else:
                 logger.warning(f"Knowledge not found for: {query}")
                 return "Maaf, informasi tersebut tidak ditemukan dalam database pengetahuan kopi saya."
             
+        # Combine: Injected Context + Retrieved Documents
         context = injected_context + "\n\n" + "\n\n".join(valid_docs)
         return context
         
@@ -169,8 +184,7 @@ def find_cafes_with_maps(city_name: str, preferences: str = "") -> str:
     
     try:
         # --- STEP 1: Resolve Location using Vector Search ---
-        # We use Qdrant instead of exact string matching (Pandas) to handle typos.
-        # e.g., "Surbaya" -> matches "KOTA SURABAYA" vector.
+        # We use Qdrant instead of exact string matching to handle typos (e.g., "Surbaya").
         vector_store_loc = QdrantVectorStore(
             client=client, 
             collection_name="pikopi_locations", 
@@ -178,7 +192,7 @@ def find_cafes_with_maps(city_name: str, preferences: str = "") -> str:
         )
         results = vector_store_loc.similarity_search_with_score(city_name, k=1)
         
-        # Strict threshold (0.75) to ensure we don't map random words to cities.
+        # Strict threshold (0.50) to ensure we don't map random words to cities.
         if not results or results[0][1] < 0.50:
             logger.warning(f"City not found or low score: {city_name}")
             return f"Waduh, PIKOPI belum punya data lokasi untuk '{city_name}', atau mungkin ada typo? Coba ketik nama kotanya yang lengkap ya Kak (misal: 'Kota Surabaya')."
@@ -201,6 +215,7 @@ def find_cafes_with_maps(city_name: str, preferences: str = "") -> str:
         
         prompt_context = f"Saat ini hari {day_name}, jam {current_time} WIB."
         
+        # Construct prompt for Gemini with specific instructions to extract Price Level
         if preferences:
             prompt = (
                 f"{prompt_context} Carikan rekomendasi coffee shop di {found_name} yang BUKA JAM SEGINI "
@@ -208,7 +223,7 @@ def find_cafes_with_maps(city_name: str, preferences: str = "") -> str:
                 f"Untuk setiap tempat, jelaskan secara singkat:\n"
                 f"1. Kenapa tempat ini cocok dengan kriteria user?\n"
                 f"2. Apa menu andalan (signature dish) mereka?\n"
-                f"3. Bagaimana vibe/suasananya (misal: tenang, ramai, instagramable)?"
+                f"3. Bagaimana vibe/suasananya (misal: tenang, ramai, instagramable)?\n"
                 f"4. **Price Level**: (Cari tanda $, $$, atau $$$ di data Google Maps. Jika tidak ada, tulis 'Info harga tidak tersedia').\n"
             )
         else:
