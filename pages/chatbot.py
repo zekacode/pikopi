@@ -49,18 +49,35 @@ st.set_page_config(
 
 # --- 3. CUSTOM CSS STYLING ---
 # Injects custom CSS to improve the UI/UX (rounded chat bubbles, link colors).
+# --- CSS CUSTOM (DARK MODE SUPPORT) ---
 st.markdown("""
 <style>
-    /* Chat bubble styling */
-    .stChatMessage { border-radius: 10px; padding: 10px; }
-    .stChatMessage[data-testid="stChatMessageUser"] { background-color: #f0f2f6; }
+    /* Bubble Chat User - Warna Coklat Medium */
+    .stChatMessage[data-testid="stChatMessageUser"] {
+        background-color: #3E322C; 
+        color: #E6D7C3;
+    }
     
-    /* Header color */
-    h1 { color: #6F4E37; }
+    /* Bubble Chat Assistant - Transparan/Default Dark */
+    .stChatMessage[data-testid="stChatMessageAssistant"] {
+        background-color: transparent;
+    }
+
+    /* Warna Judul H1 - Mengikuti Primary Color */
+    h1 {
+        color: #D4A373 !important;
+    }
     
-    /* Hyperlink styling for Google Maps links */
-    a { color: #1E90FF; font-weight: bold; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    /* Link Google Maps - Warna Emas/Terang agar terbaca */
+    a {
+        color: #F4A261 !important;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+        color: #E9C46A !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 

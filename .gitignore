@@ -1,0 +1,14 @@
+# Abaikan Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Abaikan File Sampah Python
+__pycache__/
+*.py[cod]
+
+# PENTING: Abaikan Kunci Rahasia (API Keys)
+.streamlit/secrets.toml
+
+# Abaikan file sistem
+.DS_Store
