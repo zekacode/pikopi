@@ -13,7 +13,6 @@ Key Features:
 
 Author: Putrawin Adha Muzakki
 """
-
 import streamlit as st
 import sys
 import os
@@ -23,8 +22,23 @@ import logging
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from modules.chatbot.tools import tools_list
+
+# --- PERBAIKAN PATH IMPORT (CRITICAL FIX) ---
+# Ambil lokasi file ini berada (yaitu folder 'pages')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Naik satu level ke root project (yaitu folder 'pikopi')
+root_dir = os.path.dirname(current_dir)
+
+# Masukkan root_dir ke sys.path agar folder 'modules' terbaca sebagai package
+if root_dir not in sys.path:
+    sys.path.append(root_dir)
+
+# Sekarang import tools dari modules
+try:
+    from modules.chatbot.tools import tools_list
+except ImportError as e:
+    st.error(f"Gagal mengimport tools: {e}. Pastikan folder 'modules' memiliki file __init__.py")
+    st.stop()
 
 # --- 1. LOGGING CONFIGURATION ---
 # Configures the logging system to capture runtime events and errors.
@@ -93,10 +107,14 @@ def get_agent():
     """
     try:
         # Load API Keys from local secrets.toml or Streamlit Cloud secrets
-        if os.path.exists(".streamlit/secrets.toml"):
-            secrets = toml.load(".streamlit/secrets.toml")
+        # Kita gunakan root_dir yang sudah kita definisikan di atas agar path aman
+        local_secrets_path = os.path.join(root_dir, ".streamlit", "secrets.toml")
+        
+        if os.path.exists(local_secrets_path):
+            secrets = toml.load(local_secrets_path)
             os.environ["GOOGLE_API_KEY"] = secrets["GOOGLE_API_KEY"]
         else:
+            # Fallback ke Streamlit Cloud Secrets (Environment Variables)
             os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
         
         logger.info("Agent initialized successfully.")
