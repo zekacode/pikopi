@@ -14,3 +14,8 @@ qdrant-client
 langgraph
 langchain-core
 langchain-community
+langchain-qdrant
+google-genai
+pandas
+toml
+pytz
