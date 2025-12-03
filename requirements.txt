@@ -7,3 +7,7 @@ uvicorn
 numpy
 python-multipart
 huggingface_hub
+langchain
+langchain-google-genai
+langchain-community
+qdrant-client

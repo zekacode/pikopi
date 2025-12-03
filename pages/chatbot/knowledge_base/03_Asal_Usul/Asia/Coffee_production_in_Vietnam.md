@@ -1,0 +1,121 @@
+# Coffee production in Vietnam
+
+"Vietnamese coffee
+
+|  |  |
+| --- | --- |
+|  | This article **needs additional citations for verification**. Please help improve this article by adding citations to reliable sources. Unsourced material may be challenged and removed. *Find sources:* "Coffee production in Vietnam"](https://www.google.com/search?as_eq=wikipedia&q=%22Coffee+production+in+Vietnam%22) – [news](https://www.google.com/search?tbm=nws&q=%22Coffee+production+in+Vietnam%22+-wikipedia&tbs=ar:1) **·** [newspapers](https://www.google.com/search?&q=%22Coffee+production+in+Vietnam%22&tbs=bkt:s&tbm=bks) **·** [books](https://www.google.com/search?tbs=bks:1&q=%22Coffee+production+in+Vietnam%22+-wikipedia) **·** [scholar](https://scholar.google.com/scholar?q=%22Coffee+production+in+Vietnam%22) **·** [JSTOR](https://www.jstor.org/action/doBasicSearch?Query=%22Coffee+production+in+Vietnam%22&acc=on&wc=on) *(February 2015)* *([Learn how and when to remove this message)* |
+
+Coffee landscape, Gia Lai province
+
+Coffee production has been a major source of income for Vietnam since the early 20th century. First introduced by the French in 1857, the Vietnamese coffee industry developed through the plantation system, becoming a major economic force in the country. After an interruption during and immediately following the Vietnam War, production rose once again after Đổi mới economic reforms, making coffee second only to rice in value of agricultural products exported from Vietnam.
+
+## History
+
+Coffee trees on the Cressonnière plantation, near Kécheu. 1898
+
+It is believed that the coffee plant was first introduced to Vietnam in 1857 by French missionaries, but the first coffee plantations were only set up in 1888 at the Ninh Bình and Quảng Bình provinces of Tonkin "Tonkin (French protectorate)"). Early coffee production was mainly of the Arabica variety.
+
+The height of coffee production occurred in the early 20th century as small-scale production increasingly shifted towards commercial plantations. In the 1920s, the French decided to open coffee production zones in parts of the Central Highlands "Central Highlands (Vietnam)"), mainly in Đắk Lắk Province. An estimated total of 1,500 tons of coffee was produced for export each year by 1930; that amount increased to 2,000 tons per year by 1940. The first instant coffee plant, Coronel Coffee Plant, was established in Biên Hòa, Đồng Nai Province in 1969, with a production capacity of 80 tons per year.
+
+The Vietnam War disrupted production of coffee in the Buôn Ma Thuột region, the plateau on which the industry was centered. Although seldom involved in conflict, the area was a crossroads between North and South and was largely depopulated. After the North Vietnamese victory, the industry, like most agriculture, was collectivized, limiting private enterprise and resulting in low production.
+
+Following Đổi mới reforms in 1986, privately owned enterprise was once again permitted, resulting in a surge of growth in the industry.
+
+Cooperation between growers, producers and government resulted in branding finished coffees and exporting products for retail. However, by the late 1970s, economic and social reforms led to labour shortages in the Central Highlands, thus creating opportunities for migration into these less populated regions, compared to the overpopulation and poverty experienced in the lowland areas. It is likely that between four and five million people migrated to the Central Highlands after 1975.
+
+## Impacts of coffee production
+
+### Fluctuations in the coffee economy
+
+*Arabica* in Vietnam
+
+In 2023, Vietnam exported 1.62 million tons of coffee. Vietnam is the second largest producer in the world after Brazil, with Robusta coffee accounting to 97 per cent of Vietnam's total output. However, coffee farmers in Vietnam have always experienced cycles of boom and bust since the 1980s, making the industry a highly volatile one. Despite the fluctuating global coffee prices, importing countries continue paying a steady price while coffee farmers from exporting countries experience the daily price range.
+
+This pattern saw the production of coffee in Vietnam at 29.3 million bags in 2017, nearly 600,000 bags lower than the USDA estimate for that year, due to losses caused by late rain. The USDA Foreign Agriculture Service has correctly predicted the increase in production in 2018, as shown in a Bloomberg report and forecasted a further increase in 2019 due to better land management, higher replanting rates, more efficient storage and significant private sector involvement. According to Deputy Prime Minister Vuong Dinh Hue, Vietnam expects this growth in 2018 to beat the Government's target of 6.7%, matching 2017's economic growth of 6.8%. However, the extent to which the Government promotes growth at the expense of social inequalities and environmental degradation should also be looked at.
+
+When the global price of coffee dropped in 2001, many farming households had to reduce their daily meal, changed their diets or relied on food donations from the authorities. While the boom allowed children of medium to low income households to attend school and for families to purchase household goods like television sets, the declining coffee prices reversed this; children were forced to quit schools and self-employed, subsistence farmers had to find wage labour work.
+
+Poor management might recall the 2013–2014 coffee boom when a bumper harvest of 29.5 million bags (from 17 million the previous year) added to the global oversupply of beans and plummeted coffee prices. This led to nearly half of the 127 local coffee export firms to cease trading due to their inability to repay loans. The amount of non-performing loans or debts in the coffee sector likely to go unpaid stands at 8 trillion dong (US$379 million), which is around 60 percent of all loans for the coffee industry in Vietnam.
+
+In March 2025, as U.S. Coffee C Futures prices reach an all-time high, Vietnam's coffee production is projected to total 26.5 million bags. This marks a decline of approximately 2% compared to the 2023–2024 season, primarily due to adverse weather conditions.
+
+### Social inequality
+
+#### Ethnic Kinh v. indigenous minorities
+
+Further information: FULRO insurgency and Persecution of the Montagnard in Vietnam
+
+The robust Vietnamese coffee industry which is sustained by global capitalism has been built at the expense of indigenous Montagnard "Montagnard (Vietnam)") peoples, the original inhabitants of the Central highlands. According to researcher Seb Rumsby, the abolition of indigenous autonomous zones by the Vietnamese Congress in 1975–1976 reflects Kinh chauvinism and craving for economic developments, with regions such as the Central Highland deemed more attractive to foreign investments due to their rich natural resources and suitable lands for farming coffee. The exponential growth of the coffee industry has also had severe environmental consequences due to its rapid deforestation and land encroachments, enhancing climate change and directly impacting the entire region.
+
+With businesses shutting down due to debt, smallholder coffee farmers also bear the brunt of falling prices. However, the effect is not uniform across the producers, exacerbating existing social inequalities.
+
+The ethnic inequality narrative has been prevalent in literature written from 2003 to 2013 producing ethnohistorical and developmental analyses situating the coffee industry's risks at a very real, lived experience level. In a study of the household income of Kinh and the minority [Ede](http://www.vietnam-culture.com/anak-ede-ethnic-group.aspx) coffee farmers, it was discovered what initially seemed counterintuitive: despite having larger farms and planting a larger share of coffee than their Kinh counterparts, the Ede farmers still had a lower household income.
+
+Data from a 2003 survey of 209 smallholder coffee farmers suggested that higher household dependencies and the use of family labour on the coffee plantations could account for the Ede's lower household income as these forms of unpaid work (usually by uneducated women and children) could translate to lower yields as a result of less technical know-how and productivity. It further postulates that the Kinh, due to their smaller families, are low on manpower and hire labour (usually other Kinh) who might already be familiar with coffee cultivation. The researchers caution however that this labour hiring "is as much a *result* of high household income as a *cause* of that income".
+
+In a similar study, smallholder from four communes of Ea Tul, Ea Kpal, Ea Pok and Quang Phu were surveyed from 1999 and 2003. This study went further by examining the differing household responses between the Kinh and Ede to falling coffee prices, and how this affected their income. Kinh households were more likely to borrow money or engage in off-farm work than the Ede. While the Ede, who have larger farms, were actually buffered from their reliance on coffee as they could change crops or shift cultivation. However, this did not mean that the Ede would fare better and they were in fact their conditions were made worse by their lack of access to short-term loans or by leaving their family farms for too long to seek employment elsewhere. Researchers have recommended that existing macro policies should help diversify income without basing this on the diversification of crops, as the case with the Ede.
+
+#### Migrant networks
+
+While both these studies identify that human dislocation are associated with inadequate macro-level policies, it does shift the responsibility of solutioning only to the government. Ironically, while these studies focus on the micro-level impact of the coffee boom and bust, it offers little insights into the motivations or support systems between these farmers in offering alternative employments or even directing each other to sources of loans. While Kinh farmers seem to enjoy better prospects than their ethnic minority counterpart, inequalities also exist within this group.
+
+Thus, migrant networks provide an intra-regional perspective to uncover the ways that coffee farmers draw on resources including labour power, financial capital and social support. This happens both at the destination and also back home. For example, Kinh emigrants rely on family to look after their children and plots of land back home which ensures that the district authorities do not reallocate the land. Parents and spouses of migrants can sometimes also take loans using these lands to support farming investments up in the highlands. As such, these linkages between the uplands and lowlands are essential to understanding the Central Highlands especially in the context of future risk management.
+
+However, such a rosy picture of emigration should prompt critical inquiry. Historically, the post-colonial Vietnamese government had succeeded in mobilizing millions of lowland farmers into the highlands where the French had previously failed. This was however not without the initial resistance of these farmers. It was only in the 1980s and 1990s that we see a shift to self and economic driven motivations when success stories of coffee farmers in the highlands became a dominant narrative. While family/village networks were a tool aiding this movement, relatives often offered help for migrants to settle in exchange for work. Even the benefits that was mentioned about familial help back home needs to be situated in what can be considered ‘negotiated reciprocity’ involving both ‘mutual aid and mutual exploitation’. An alternative resource to familial networks that migrants also took advantage of were the colonial employment opportunities offered by the French during the colonial period and later by the Vietnamese state under their mobility programme.
+
+### Environmental degradation
+
+The expansion of coffee production in the Central Highlands occurred mostly in the region of Dak Lak. In addition to the displacement of some ethnic minority communities, the continued expansion and conversion of unsuitable land for coffee production has led to considerable deforestation and loss of biodiversity. The lure of coffee farming as a success story has led to an unsustainable tapping of surface and underground resources as the goal was to achieve higher economic growth, putting environmental costs and risks as a secondary consideration. The intensive use of fertiliser and a widespread mono-cropping has also led to a fall in soil fertility and rise in pest infestations. In a study funded by the World Bank and [EcoAgriculture Partners](/w/index.php?title=Ecoagriculture_Partners&action=edit&redlink=1 "Ecoagriculture Partners (page does not exist)"), it was found that half a million smallholder farmers are now in a collective brinkmanship with the physical environment on which their livelihoods depend on; ageing tree stock, rising labour costs, climate change and competition for natural resources providing unfavourable odds for them. It might prove counterproductive for official reports to under-represent such realities where unsuitable land cultivated for coffee were often not included in the statistics.
+
+However, while environmental degradation happens, it is not homogeneous and varies by region, often a result of the socioeconomic inequality touched on earlier. Research has shown that this happens when capital-rich Kinh households acquire and convert agricultural lands to perennial crops for external markets which results in a displacement for poor ethnic minorities who rely on shifting cultivation near the forest margins. It would thus be more accurate to situate the fluctuating coffee economy, social inequality and environmental degradation not as separate entities but in a relationship with each other.
+
+## Steps towards sustainable production
+
+In 2010, The New Vision for Agriculture (NVA) framework was created under the direction of the Minister of Agriculture and Rural Development. This 10-year strategy aimed to advance sustainable, large-scale agricultural productivity, quality and competitiveness to achieve national food security and sustainable economic growth. The NVA framework was incorporated into the national agriculture strategy in November 2011 by the Vietnam government.
+
+A working group on coffee was one of the first initiatives of the Partnership for Sustainable Agriculture in Vietnam. A number of prominent coffee companies collaborated with government, civil society organizations and farmers as part of a pre-competitive effort to replace aging coffee trees and provide extension and financing services.
+
+### Establishment of the Coffee Coordination Board (CCB)
+
+This working group eventually led to the establishment of the Coffee Coordination Board (CCB) in 2013. Research and literature produced from here on shifted in the scale and ideological perspective, perhaps mirroring the greater interest and participation of the government. In the case study of Dak Lak conducted by the World Bank and EcoAgriculturepartners in 2015, such a shift is historically charted through the changing development of coffee governance from a weak structure made up of competing interests and policies, to one headed by the CCB that responds to the social, economic and environmental risks to local coffee farmers by providing resources, education and training.
+
+One such initiative was the support for coffee replanting, based on a perceived crisis of the ageing tree stock. This was based on the estimation by the World Bank in 2011 that in the absence of replanting, Vietnam's coffee production would fall by 30 to 40% by the mid-2020s. However, as this is a long-term investment, smallholder farmers may experience reductions in income during the early maturing period of the trees (three years to generate yield and another three years to yield fully) and as such, financing solutions were also concurrently developed by the government to mitigate the effects.
+
+However, despite this greater effort, the policies and initiatives were at times prescriptive with weak enforcement and poor information dissemination. For example, while the government have offered cash incentives to farmers who adopt newer farming practices to lower water pollution, most were reluctant or slow at adopting these measures seeing as there were no penalties. Improvements have to be made to address the social and ethical motivations to convince a more ground-up solution to the issue. There is evidence that the CCB and the government have taken into consideration policy recommendations made by researchers over the past decade such as prioritizing crop diversification and ecological farming practices. However, this seemingly blanketing of current macro-level responses ignores the fact that access to the CCB's programmes are still unequal, often favouring the Kinh majority over the ethnic minorities in the Highlands.
+
+### Fair Trade coffee certification
+
+Perhaps an alternative to the top-down approach sanctioned by the CCB would be to look at how international fair trade certifications such as Nestle's 4C, UTZ, and Rainforest Alliance could play a part in helping producers directly, as is Rainforest Alliance's concept of "from farm to cup". Fair Trade is the most commonly recognized certification across many major consumers such as the United States, Europe, Japan and South Korea.
+
+In Vietnam, certification schemes represent the height of market capitalist investments strengthening the state's desire of projecting Vietnam's identity in the global market while maintain its stream of coffee export revenues.
+
+Fair trade coffee has been critiqued as being an imagined construct with international consumers participating in this ideology believing that "the social and ecological conditions of production and trade are said to be the outcome of decisions made by consumers through their ‘consumer power’". In the case of Vietnam, the agent shaping this fair-trade discourse is still the Vietnamese government, engaging in coffee statecraft. This is done as a two-pronged approach: Defending coffee as a means for providing rural employment and source of state revenue at home and foreign exchange at the international level, as well as promoting coffee as an export commodity to encourage private or semi-private landholders’ buy-in into the wider strategy to integrate Vietnam into the global market. While these efforts helped expand the coffee industry, its negative social and ecological impacts cannot be ignored. Even then, one should not underestimate the value of productivity and economic efficiency in reducing poverty, even if they go contrary to the ecologically sustainable methods.
+
+The main critique of fair-trade rhetoric is that it reproduces images of poverty and primitivity which then feeds onto the illusion that consumers play the most important role in helping these poor farmers out of poverty and towards modernity. That is not to say that international consumers have no part to play in contributing to ethical and ecological practices. It would take a collective action at the global level to address climate change rather than a disproportionate "dumping" of the responsibility on the Vietnamese farmers (and global South in general) to participate in sustainable agriculture.
+
+While it is acknowledged that fair trade is a concern and expectation of people in the post-colonial world; an attempt to be socially conscious of the commodities produced by ‘developing’ countries like Vietnam, for these coffee farmers, certification may actually enable them to shape the discourses relating to coffee bean quality, ideas of fair trade and the future of Vietnamese coffee as an autonomous brand. Furthermore, certifications also produce a recognition of the quality of Vietnamese coffee; the Robusta variety often stigmatized as being inferior to Arabica beans.
+
+This is often done through audits to provide accountability and transparency for consumers and investors, a relatively new, post- Doi Moi initiative that Vietnamese farmers have to also grapple with to maximise their potential earnings. The question that many Vietnamese ask is not "how can we improve Vietnamese coffee quality" but rather, "when will Vietnamese coffee quality be recognized?" Through their desire to develop loyal patronage, local coffee producers and café entrepreneurs have sought to change discourses on the quality of Vietnamese coffee; establishing new origin stories by allowing people to (informally) trace the product back to its source location through the use of packaging. Trung Nguyên, one of Vietnam's leading domestic coffee brand, markets its instant coffee as being made from "the choicest coffee beans from Vietnam’s legendary basaltic region". So legendary that domestic tourists have been flocking to Dak Lak on official coffee tours to visit the Trung Nguyên coffee village and world coffee museum.
+
+## Global marketplace
+
+A cup of coffee in Hanoi.
+
+Starbucks opened its first store in Vietnam in 2013, setting a trend for global retailers to follow suit. In 2017, Boncafé, the European producer of gourmet café, opened its first showroom in Ho Chi Minh city alongside a hi-tech factory producing and exporting coffee in Binh Duong city.
+
+Under the Country of Origin Labelling (COOL) legislation that came out of the 2002 Farm Security and Rural Investment Act (See Section 10816 of 7 U.S.C. 1638-1638d), some commodities are exempted from country of origin labelling requirements when the product changes form/character during processing, as is the case with coffee. As such, there is no requirement to identify Vietnamese coffee as "Made in Vietnam".
+
+In the US, Vietnamese-style coffee is sometimes confused with that brewed in Louisiana with French roast coffee with chicory. Vietnamese immigrants who came to the state in the late 20th century adopted New Orleans-style coffee because they were unable to obtain Vietnamese-grown coffee. The French roast style popular in Louisiana was similar to Vietnamese coffee in its relatively coarse grind, which made it an excellent substitute for traditional brewing in the single-serving filter/brewer. In Vietnam, however, locally produced coffees are characterized by medium roast and do not contain chicory.
+
+Since economic liberalization under Đổi mới with the growth of Vietnamese coffee, this product now competes in an international environment with different laws, cultures, tastes and business practices.
+
+## Style
+
+Vietnamese coffee brewing in all metal single-cup filters, known as a phin "Phin (coffee filter)"). In Vietnam, a cup of coffee is often accompanied by a cup of hot or cold tea.
+
+Vietnamese Buôn Ma Thuột-style coffee has characteristics that distinguish it from other coffees and brewing methods:
+
+1. The growing regions of the Buôn Mê Thuột have been classified into micro-climates by European scientists contracted by private industry. In these different regions, several species of coffee are grown, including *Arabica*, *Robusta/Canephora*, *Chari* (*Coffea liberica*), with Arabica varieties including *[Catimor](/w/index.php?title=Catimor&action=edit&redlink=1 "Catimor (page does not exist)")*, and some with indigenous lineage, such as the Arabica SE. Vietnamese coffee producers blend multiple varieties of beans for different flavor characteristics and balance, or to reduce production cost.
+2. Typically the coffee is prepared in single servings in single-cup filter/brewers known as **phin "Phin (coffee filter)")**. Generally the coffee is served table-side while it is still brewing. The use of sweetened condensed milk rather than fresh milk was first due to its availability and easier storage in a tropical climate. The condensed milk serves to sweeten the coffee and offset its bold flavor. Long practice has led to this being the taste preference in the Vietnamese community.
+3. The coffee may be brewed into ice for **cà phê đá**, or when had with condensed milk for **cà phê sữa đá**.

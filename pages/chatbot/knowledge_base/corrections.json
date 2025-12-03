@@ -1,0 +1,24 @@
+{
+  "v60": "V60 adalah nama ALAT (dripper) berbentuk kerucut buatan Hario. Metodenya disebut 'Pour Over' atau 'Drip Coffee'.",
+  "kalita": "Kalita Wave adalah nama ALAT (dripper) dengan dasar rata (flat bottom). Metodenya disebut 'Pour Over'.",
+  "chemex": "Chemex adalah nama ALAT gelas laboratorium yang estetik. Metodenya adalah 'Pour Over', namun menggunakan kertas filter yang sangat tebal sehingga hasil kopinya sangat bersih (clean).",
+  "origami": "Origami Dripper adalah nama ALAT berbentuk lipatan kertas. Metodenya adalah 'Pour Over'.",
+  "melitta": "Melitta adalah nama ALAT (dripper) klasik bentuk trapesium. Metodenya adalah 'Pour Over'.",
+  
+  "french press": "French Press (Plunger) adalah nama ALAT. Metodenya disebut 'Immersion' (Perendaman Penuh), menghasilkan kopi yang tebal (full body).",
+  "aeropress": "Aeropress adalah nama ALAT. Metodenya unik, merupakan hibrida antara Immersion (rendam) dan Air Pressure (tekanan udara manual).",
+  "clever dripper": "Clever Dripper adalah nama ALAT. Metodenya hibrida: direndam dulu seperti French Press, lalu ditiriskan seperti V60.",
+  "syphon": "Syphon (Siphon) adalah nama ALAT yang terlihat seperti alat lab. Metodenya menggunakan prinsip Fisika Vakum (Vacuum Pot).",
+  
+  "moka pot": "Moka Pot adalah nama ALAT seduh kompor. Metodenya disebut 'Stovetop Espresso'. Ini menghasilkan kopi pekat dengan tekanan uap air, tapi tekanannya lebih rendah dari mesin Espresso.",
+  "rok presso": "ROK Presso adalah nama ALAT (merek). Metodenya adalah 'Manual Espresso' yang menggunakan tenaga tangan untuk menciptakan tekanan.",
+  "flair": "Flair adalah nama ALAT (merek). Metodenya adalah 'Manual Espresso' menggunakan tuas.",
+  
+  "vietnam drip": "Vietnam Drip (Phin) adalah nama ALAT saringan logam. Metodenya adalah 'Slow Drip' yang mengandalkan gravitasi.",
+  
+  "cold brew": "Cold Brew adalah METODE seduh, bukan sekadar 'kopi dingin'. Kopi diseduh dengan air suhu ruang/dingin selama 8-24 jam (perendaman). Rasanya tidak asam dan sangat halus.",
+  "japanese iced": "Japanese Iced Coffee adalah METODE seduh. Kopi diseduh panas (biasanya V60) langsung ke atas es batu (Flash Chill). Rasanya segar dan aromatik, beda dengan Cold Brew.",
+  
+  "tubruk": "Tubruk adalah METODE seduh asli Indonesia. Bubuk kopi langsung disiram air panas tanpa disaring (Immersion). Tidak butuh alat khusus selain gelas dan sendok.",
+  "kopi joss": "Kopi Joss adalah varian penyajian unik khas Yogyakarta, di mana arang panas dimasukkan ke dalam gelas kopi."
+}
