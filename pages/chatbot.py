@@ -115,9 +115,8 @@ agent_executor = get_agent()
 
 # --- 5. SIDEBAR UI ---
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/751/751621.png", width=100)
     st.title("PIKOPI ☕")
-    st.markdown("Asisten Barista Pintar")
+    st.markdown("Klik Di sini untuk reset chat dan memulai percakapan baru.")
     
     # Reset Button: Clears session state to start a new conversation
     if st.button("🗑️ Reset Chat"):
