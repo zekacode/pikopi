@@ -34,7 +34,6 @@ from google import genai
 from google.genai import types
 
 # --- 1. LOGGING SETUP ---
-# We use the same logging configuration as app.py to centralize debug info.
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -47,47 +46,65 @@ logger = logging.getLogger(__name__)
 
 logger.info("🔧 Initializing tools module...")
 
-# --- 2. CONFIGURATION & SECRETS ---
-# Load API keys securely. Supports both local development (.streamlit/secrets.toml)
-# and cloud deployment environments.
+# --- 2. CONFIGURATION & SECRETS (UPDATED PATHS) ---
+# BASE_DIR = Lokasi file tools.py ini berada (pikopi/modules/chatbot)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SECRETS_PATH = os.path.join(BASE_DIR, ".streamlit", "secrets.toml")
+
+# ROOT_DIR = Lokasi folder utama proyek (pikopi/)
+# Kita naik 2 level ke atas: modules/chatbot/ -> modules/ -> pikopi/
+ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+
+# Path ke Secrets (Ada di folder .streamlit di ROOT)
+SECRETS_PATH = os.path.join(ROOT_DIR, ".streamlit", "secrets.toml")
+
+# Path ke Corrections JSON (Ada di dalam knowledge_base di sebelah tools.py)
+CORRECTIONS_PATH = os.path.join(BASE_DIR, "knowledge_base", "corrections.json")
 
 GOOGLE_API_KEY = None
 QDRANT_URL = None
 QDRANT_API_KEY = None
 
 try:
-    secrets = toml.load(SECRETS_PATH)
-    GOOGLE_API_KEY = secrets["GOOGLE_API_KEY"]
-    QDRANT_URL = secrets["QDRANT_URL"]
-    QDRANT_API_KEY = secrets["QDRANT_API_KEY"]
+    # Cek apakah file secrets lokal ada
+    if os.path.exists(SECRETS_PATH):
+        secrets = toml.load(SECRETS_PATH)
+        GOOGLE_API_KEY = secrets["GOOGLE_API_KEY"]
+        QDRANT_URL = secrets["QDRANT_URL"]
+        QDRANT_API_KEY = secrets["QDRANT_API_KEY"]
+        logger.info(f"✅ Secrets loaded from local file: {SECRETS_PATH}")
+    else:
+        # Fallback untuk Streamlit Cloud (menggunakan st.secrets)
+        # Kita import streamlit hanya untuk ambil secrets jika lokal tidak ada
+        import streamlit as st
+        GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+        QDRANT_URL = st.secrets["QDRANT_URL"]
+        QDRANT_API_KEY = st.secrets["QDRANT_API_KEY"]
+        logger.info("✅ Secrets loaded from Streamlit Cloud environment.")
     
-    # Set env var for LangChain components that require it implicitly
+    # Set env var for LangChain components
     os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
-    logger.info("✅ Secrets loaded successfully.")
+
 except Exception as e:
     logger.error(f"❌ Error loading secrets: {e}")
 
-# Path to corrections.json for typo handling in location names
-CORRECTIONS_PATH = os.path.join(BASE_DIR, "knowledge_base", "corrections.json")
-
-#Helper Function to Load Corrections
+# --- Helper Function to Load Corrections ---
 def load_corrections():
     """Membaca data koreksi dari JSON agar tidak hardcoded di script"""
     try:
-        with open(CORRECTIONS_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        if os.path.exists(CORRECTIONS_PATH):
+            with open(CORRECTIONS_PATH, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        else:
+            logger.warning(f"⚠️ Corrections file not found at: {CORRECTIONS_PATH}")
+            return {}
     except Exception as e:
         logger.error(f"Gagal memuat corrections.json: {e}")
         return {}
 
-#Load corrections data globally
+# Load corrections data globally
 CORRECTION_DATA = load_corrections()
 
 # --- 3. GLOBAL CLIENT INITIALIZATION ---
-# Initialize clients once to avoid overhead on every tool execution.
-# Using 'text-embedding-004' for high-quality semantic vectorization.
 embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 

@@ -41,7 +41,7 @@ with col2:
     
     # Tombol untuk navigasi ke halaman Chatbot
     if st.button("💬 AI Chatbot", use_container_width=True):
-        st.switch_page("pages/chatbot/app.py")
+        st.switch_page("pages/chatbot.py")
 
     # Tombol untuk navigasi ke halaman Saran
     if st.button("💡 Saran Kopi Sesuai Selera", use_container_width=True):
