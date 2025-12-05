@@ -1,0 +1,19 @@
+# --- KESELAMATAN (WAJIB) ---
+.streamlit/secrets.toml
+.env
+
+# --- PYTHON & SYSTEM JUNK ---
+__pycache__/
+*.pyc
+
+venv/
+env/
+.venv/
+
+# --- IDE SETTINGS
+.vscode/
+.idea/
+
+# File sampah Windows
+.DS_Store
+Thumbs.db
