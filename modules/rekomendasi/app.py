@@ -180,7 +180,7 @@ if st.session_state.recommendation_done:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
 
-    if prompt := st.chat_input("Tanya detail lain (misal: cara seduh, harga, dll)"):
+    if prompt := st.chat_input("Tanya detail lain"):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
