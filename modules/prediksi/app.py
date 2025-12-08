@@ -10,9 +10,7 @@ import plotly.express as px
 st.set_page_config(page_title="Coffee Score Prediction", layout="wide")
 st.title("Coffee Score Prediction App")
 
-# -----------------------------
 # Upload CSV
-# -----------------------------
 uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
 if not uploaded_file:
     st.info("Silakan upload CSV terlebih dahulu.")
@@ -22,16 +20,12 @@ df = pd.read_csv(uploaded_file)
 st.subheader("Data Awal")
 st.dataframe(df.head(10))
 
-# -----------------------------
 # Preprocessing
-# -----------------------------
 df_clean = preprocess_batch(df)
 st.subheader("Data Setelah Preprocessing")
 st.dataframe(df_clean.head(10))
 
-# -----------------------------
 # Pilih Mode
-# -----------------------------
 mode = st.radio("Pilih Mode Prediksi", ["fisik", "akurat"])
 if mode == "fisik":
     features = ['Altitude', 'Coffee Age', 'Moisture Percentage',
@@ -42,9 +36,7 @@ else:
     features = [f for f in features if f in df_clean.columns]
     model = joblib.load("models/ridge.pkl")
 
-# -----------------------------
-# Siapkan Data untuk Prediksi
-# -----------------------------
+# Siapkan Data
 numeric_features = features
 categorical_features = [c for c in ['Processing Method','Variety'] if c in df_clean.columns]
 
@@ -55,18 +47,14 @@ preprocessor = ColumnTransformer([
 
 X_processed = preprocessor.fit_transform(df_clean[features + categorical_features])
 
-# -----------------------------
 # Prediksi
-# -----------------------------
 df_clean['Predicted_Score'] = model.predict(X_processed)
 
 st.subheader("Hasil Prediksi")
 columns_to_show = ['Predicted_Score'] + categorical_features
 st.dataframe(df_clean[columns_to_show].head(10))
 
-# -----------------------------
 # Feature Importance
-# -----------------------------
 st.subheader("Feature Importance")
 try:
     if hasattr(model, 'feature_importances_'):
@@ -88,9 +76,7 @@ try:
 except Exception as e:
     st.warning(f"Gagal menampilkan feature importance: {e}")
 
-# -----------------------------
-# Download Hasil
-# -----------------------------
+# Download hasil
 csv = df_clean.to_csv(index=False).encode('utf-8')
 st.download_button(
     label="Download Hasil Prediksi CSV",
