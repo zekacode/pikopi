@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-import plotly.express as px
 from modules.prediction.preprocess import preprocess_batch
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+import plotly.express as px
 
 st.set_page_config(page_title="Coffee Score Prediction", layout="wide")
 st.title("Coffee Score Prediction App")
@@ -60,6 +60,9 @@ X_processed = preprocessor.fit_transform(df_clean[features + categorical_feature
 # -----------------------------
 df_clean['Predicted_Score'] = model.predict(X_processed)
 
+st.subheader("Hasil Prediksi")
+columns_to_show = ['Predicted_Score'] + categorical_features
+st.dataframe(df_clean[columns_to_show].head(10))
 
 # -----------------------------
 # Feature Importance
