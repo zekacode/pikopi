@@ -4,7 +4,7 @@ Pillow
 tensorflow
 fastapi
 uvicorn
-numpy
+numpy>=1.24.3
 python-multipart
 huggingface_hub
 langchain
@@ -19,7 +19,7 @@ google-genai
 pandas
 toml
 pytz
-scikit-learn
+scikit-learn==1.6.1
 xgboost
 joblib
 plotly
