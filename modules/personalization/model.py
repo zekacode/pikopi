@@ -10,7 +10,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 # --- SETUP PATH & SECRETS ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR)) # Naik ke root 'pikopi'
+ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR)) 
 SECRETS_PATH = os.path.join(ROOT_DIR, ".streamlit", "secrets.toml")
 
 GOOGLE_API_KEY = None

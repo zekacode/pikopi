@@ -6,7 +6,6 @@ def load_model_and_preprocessor(mode: str) -> Tuple[Any, Any]:
     """
     Load model & preprocessor dari folder 'models' menggunakan absolute path.
     """
-    # PERBAIKAN PATH: Folder models ada di sebelah file ini
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 
     model_obj, preprocessor_obj = None, None
@@ -18,9 +17,6 @@ def load_model_and_preprocessor(mode: str) -> Tuple[Any, Any]:
 
     mpath = os.path.join(base, mname)
     ppath = os.path.join(base, pname)
-
-    # Debug (Bisa dihapus nanti kalau sudah jalan)
-    # print("Cek path model:", mpath)
 
     if os.path.exists(mpath):
         model_obj = joblib.load(mpath)
