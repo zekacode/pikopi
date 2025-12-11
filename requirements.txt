@@ -19,3 +19,8 @@ google-genai
 pandas
 toml
 pytz
+scikit-learn
+xgboost
+joblib
+plotly
+python-dateutil

@@ -24,3 +24,7 @@
 2025-12-03 12:07:22,234 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
 2025-12-03 12:07:33,988 - INFO - Response generated successfully.
 2025-12-03 12:07:54,156 - INFO - Chat history reset by user.
+2025-12-11 12:19:56,570 - INFO - 🔧 Initializing tools module...
+2025-12-11 12:19:56,570 - INFO - ✅ Secrets loaded from local file: C:\Users\Zakki\Documents\Unesa File\Semester 5\Studi Independen\pikopi\.streamlit\secrets.toml
+2025-12-11 12:19:59,958 - INFO - HTTP Request: GET https://cd6d1bd4-f86a-4486-9b88-5d5870e152a5.europe-west3-0.gcp.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2025-12-11 12:20:00,054 - INFO - Agent initialized successfully.
