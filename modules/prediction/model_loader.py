@@ -1,31 +1,40 @@
 import os
 import joblib
-from typing import Tuple, Any
 
-def load_model_and_preprocessor() -> Tuple[Any, Any]:
-    # Path folder /models relatif terhadap file ini
-    base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models"))
+# Ambil lokasi file ini berada (modules/prediction)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Folder models ada di dalam folder yang sama (modules/prediction/models)
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
-    # Nama file model dan preprocessor
-    mname = "/workspaces/pikopi/modules/prediction/models/best_model.pkl"
-    pname = "/workspaces/pikopi/modules/prediction/models/preprocessor.pkl"
+def load_model_and_preprocessor(mode="fisik"):
+    """
+    Load model dan preprocessor berdasarkan mode ('fisik' atau 'akurat').
+    """
+    try:
+        # Tentukan nama file berdasarkan mode
+        if mode == "fisik":
+            model_file = "model_fisik.pkl"
+            prep_file = "preprocessor_fisik.pkl"
+        else:
+            model_file = "model_akurat.pkl"
+            prep_file = "preprocessor_akurat.pkl"
+            
+        # Gabungkan path
+        model_path = os.path.join(MODELS_DIR, model_file)
+        prep_path = os.path.join(MODELS_DIR, prep_file)
+            
+        # Cek keberadaan file (Debugging)
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file tidak ditemukan: {model_path}")
+        if not os.path.exists(prep_path):
+            raise FileNotFoundError(f"Preprocessor file tidak ditemukan: {prep_path}")
 
-    # Full path
-    mpath = os.path.join(base, mname)
-    ppath = os.path.join(base, pname)
-
-    # Debug path
-    print("Cek path model:", mpath)
-    print("Cek path preprocessor:", ppath)
-
-    # Load model
-    if not os.path.exists(mpath):
-        raise FileNotFoundError(f"❌ Model file tidak ditemukan: {mpath}")
-    model_obj = joblib.load(mpath)
-
-    # Load preprocessor
-    if not os.path.exists(ppath):
-        raise FileNotFoundError(f"❌ Preprocessor file tidak ditemukan: {ppath}")
-    preprocessor_obj = joblib.load(ppath)
-
-    return model_obj, preprocessor_obj
+        # Load file .pkl
+        model = joblib.load(model_path)
+        preprocessor = joblib.load(prep_path)
+        
+        return model, preprocessor
+        
+    except Exception as e:
+        print(f"Error loading model: {e}")
+        return None, None
