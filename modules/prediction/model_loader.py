@@ -2,30 +2,30 @@ import os
 import joblib
 from typing import Tuple, Any
 
-def load_model_and_preprocessor(mode: str) -> Tuple[Any, Any]:
-    """
-    Load model & preprocessor dari folder 'models' menggunakan absolute path.
-    """
-    base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
+def load_model_and_preprocessor() -> Tuple[Any, Any]:
+    # Path folder /models relatif terhadap file ini
+    base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models"))
 
-    model_obj, preprocessor_obj = None, None
+    # Nama file model dan preprocessor
+    mname = "best_model.pkl"
+    pname = "preprocessor.pkl"
 
-    if mode == "fisik":
-        mname, pname = "model_fisik.pkl", "preprocessor_fisik.pkl"
-    else:
-        mname, pname = "model_akurat.pkl", "preprocessor_akurat.pkl"
-
+    # Full path
     mpath = os.path.join(base, mname)
     ppath = os.path.join(base, pname)
 
-    if os.path.exists(mpath):
-        model_obj = joblib.load(mpath)
-    else:
-        print(f"❌ File model tidak ditemukan: {mpath}")
+    # Debug path
+    print("Cek path model:", mpath)
+    print("Cek path preprocessor:", ppath)
 
-    if os.path.exists(ppath):
-        preprocessor_obj = joblib.load(ppath)
-    else:
-        print(f"❌ File preprocessor tidak ditemukan: {ppath}")
+    # Load model
+    if not os.path.exists(mpath):
+        raise FileNotFoundError(f"❌ Model file tidak ditemukan: {mpath}")
+    model_obj = joblib.load(mpath)
+
+    # Load preprocessor
+    if not os.path.exists(ppath):
+        raise FileNotFoundError(f"❌ Preprocessor file tidak ditemukan: {ppath}")
+    preprocessor_obj = joblib.load(ppath)
 
     return model_obj, preprocessor_obj

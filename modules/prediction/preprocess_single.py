@@ -1,20 +1,11 @@
+# modules/prediction/preprocess_single.py
 import pandas as pd
 import numpy as np
 from dateutil import parser
 
-def preprocess_single(sample: dict, mode: str = "fisik") -> pd.DataFrame:
-    """
-    Preprocess single sample dict into DataFrame ready for prediction.
+def preprocess_single(sample: dict) -> pd.DataFrame:
 
-    Args:
-        sample (dict): dictionary with input features
-        mode (str): "fisik" or "akurat"
-
-    Returns:
-        pd.DataFrame: preprocessed sample
-    """
     df = pd.DataFrame([sample])
-
     # ----------------------------
     # Processing Method mapping
     # ----------------------------
@@ -35,15 +26,75 @@ def preprocess_single(sample: dict, mode: str = "fisik") -> pd.DataFrame:
     # Variety mapping
     # ----------------------------
     variety_mapping = {
-        "Santander": "Other",
-        "Typica Gesha": "Other",
-        "Catucai": "Catuai",
-        "Yellow Catuai": "Catuai",
-        "unknow": "unknown",
-        np.nan: "Other"
+    # Gesha
+    "Gesha": "Gesha",
+    "Typica Gesha": "Gesha",
+    "Sl34+Gesha": "Gesha",
+
+    # Caturra
+    "Caturra": "Caturra",
+    "Red Bourbon,Caturra": "Caturra",
+    "Castillo,Caturra,Bourbon": "Caturra",
+    "Caturra-Catuai": "Caturra",
+    "BOURBON, CATURRA Y CATIMOR": "Caturra",
+
+    # Typica
+    "Typica": "Typica",
+    "Maragogype": "Typica",
+    "Java": "Typica",
+    "Gayo": "Typica",
+    "Typica + SL34": "Typica",
+
+    # Bourbon
+    "Bourbon": "Bourbon",
+    "Red Bourbon": "Bourbon",
+    "Yellow Bourbon": "Bourbon",
+    "Pacas": "Bourbon",
+    "Mundo Novo": "Bourbon",
+    "Bourbon Sidra": "Bourbon",
+    "Catuai and Mundo Novo": "Bourbon",
+    "Pacamara": "Bourbon",
+    "SL14": "Bourbon",
+
+    # Catuai
+    "Catuai": "Catuai",
+    "Yellow Catuai": "Catuai",
+    "Catucai": "Catuai",
+    "Catrenic": "Catuai",
+    "MARSELLESA, CATUAI, CATURRA & MARSELLESA, ANACAFE 14, CATUAI": "Catuai",
+
+    # Catimor / Sarchimor
+    "Catimor": "Catimor",
+    "Castillo": "Catimor",
+    "Castillo Paraguaycito": "Catimor",
+    "Parainema": "Catimor",
+    "Sarchimor": "Catimor",
+    "Lempira": "Catimor",
+    "Jember,TIM-TIM,Ateng": "Catimor",
+    "Castillo and Colombia blend": "Catimor",
+    "Catimor,Catuai,Caturra,Bourbon": "Catimor",
+    "Typica Bourbon Caturra Catimor": "Catimor",
+    "Bourbon, Catimor, Caturra, Typica": "Catimor",
+    "Caturra,Colombia,Castillo": "Catimor",
+
+    # Ethiopian Landrace
+    "Ethiopian Heirlooms": "Ethiopian Heirlooms",
+    "Wolishalo,Kurume,Dega": "Ethiopian Heirlooms",
+    "SL28": "Ethiopian Heirlooms",
+    "SL28,SL34,Ruiru11": "Ethiopian Heirlooms",
+
+    # SL34 standalone
+    "SL34": "SL34",
+
+    # Non varietal / noise
+    "SHG": "Other",
+    "unknown": "Other",
+    "unknow": "Other",
+     np.nan: "Other",
+    "Santander": "Other"  # region, bukan varietas
     }
-    if 'Variety' in df.columns:
-        df['Variety'] = df['Variety'].replace(variety_mapping)
+
+    df['Variety'] = df['Variety'].replace(variety_mapping)
 
     # ----------------------------
     # Clean Altitude
@@ -104,19 +155,18 @@ def preprocess_single(sample: dict, mode: str = "fisik") -> pd.DataFrame:
     # ----------------------------
     # Tambahkan semua kolom numerik & kategorikal sesuai mode
     # ----------------------------
-    if mode == "fisik":
-        numeric_cols = ['Altitude','Coffee Age','Moisture Percentage',
-                        'Category One Defects','Category Two Defects','Quakers']
-    else:  # mode == "akurat"
-        numeric_cols = ['Uniformity','Clean Cup','Sweetness','Overall','Flavor',
-                        'Aftertaste','Balance','Acidity','Aroma','Body']
+    numeric_cols = [
+        'Altitude','Coffee Age','Moisture Percentage',
+        'Category One Defects','Category Two Defects','Quakers',
+        'Uniformity','Overall','Flavor','Aftertaste',
+        'Balance','Acidity','Aroma','Body'
+    ]
 
     for c in numeric_cols:
         if c not in df.columns:
             df[c] = 0.0
 
-    # Pastikan kategorikal ada
-    for c in ['Processing Method','Variety']:
+    for c in ['Processing Method', 'Variety']:
         if c not in df.columns:
             df[c] = 'unknown'
 
