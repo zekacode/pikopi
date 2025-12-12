@@ -7,8 +7,8 @@ def load_model_and_preprocessor() -> Tuple[Any, Any]:
     base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models"))
 
     # Nama file model dan preprocessor
-    mname = "best_model.pkl"
-    pname = "preprocessor.pkl"
+    mname = "/workspaces/pikopi/modules/prediction/models/best_model.pkl"
+    pname = "/workspaces/pikopi/modules/prediction/models/preprocessor.pkl"
 
     # Full path
     mpath = os.path.join(base, mname)
