@@ -12,6 +12,7 @@ Key Features:
 5.  **Robust Error Handling:** User-friendly error messages with backend logging.
 
 Author: Putrawin Adha Muzakki
+Version: 2.2 (Fixed State Leakage)
 """
 
 import streamlit as st
@@ -134,20 +135,6 @@ def get_agent():
 
 agent_executor = get_agent()
 
-# --- 5. SIDEBAR UI ---
-with st.sidebar:
-    st.title("PIKOPI ☕")
-    st.markdown("Click here to reset the chat and start a new conversation.")
-    
-    # Reset Button: Clears session state to start a new conversation
-    if st.button("🗑️ Reset Chat"):
-        st.session_state.messages = []
-        logger.info("Chat history reset by user.")
-        st.rerun()
-
-# --- 6. MAIN CHAT INTERFACE ---
-st.title("Ngopi bareng PIKOPI ☕")
-
 # --- SYSTEM PROMPT & PERSONA ---
 # Defines the AI's personality (Friendly Barista) and strict operational rules.
 # Crucial for ensuring Google Maps links are preserved in the final output.
@@ -190,16 +177,36 @@ ATURAN TEKNIS (CRITICAL):
 4. JANGAN PERNAH MENGHAPUS LINK. Format: [Nama Tempat](URL).
 """
 
-# Initialize Session State for Chat History
-if "messages" not in st.session_state:
-    st.session_state.messages = [
+# --- HELPER FUNCTION: INIT HISTORY ---
+def init_chatbot_history():
+    """Returns the initial chat history with System Prompt."""
+    return [
         {"role": "system", "content": system_prompt}, # Inject Persona
         {"role": "assistant", "content": "Halo Kak! Mau ngopi apa hari ini? PIKOPI siap bantu cariin cafe atau resep seduh!"}
     ]
 
+# --- 5. SIDEBAR UI ---
+with st.sidebar:
+    st.title("PIKOPI ☕")
+    st.markdown("Click here to reset the chat and start a new conversation.")
+    
+    # Reset Button: Clears session state to start a new conversation
+    if st.button("🗑️ Reset Chat"):
+        # Reset to a specific key 'chatbot_messages' to avoid conflict with other pages
+        st.session_state.chatbot_messages = init_chatbot_history()
+        logger.info("Chat history reset by user.")
+        st.rerun()
+
+# --- 6. MAIN CHAT INTERFACE ---
+st.title("Ngopi bareng PIKOPI ☕")
+
+# Initialize Session State for Chat History (Unique Key: chatbot_messages)
+if "chatbot_messages" not in st.session_state:
+    st.session_state.chatbot_messages = init_chatbot_history()
+
 # Render Chat History
 # Skips the 'system' message so the user doesn't see the internal instructions.
-for msg in st.session_state.messages:
+for msg in st.session_state.chatbot_messages:
     if msg["role"] == "system": continue
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
@@ -210,8 +217,8 @@ if prompt := st.chat_input("Ketik pertanyaanmu di sini..."):
     with st.chat_message("user"):
         st.markdown(prompt)
     
-    # Append to history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    # Append to history (Unique Key)
+    st.session_state.chatbot_messages.append({"role": "user", "content": prompt})
     logger.info(f"User Input: {prompt}")
 
     # Generate AI Response
@@ -220,7 +227,7 @@ if prompt := st.chat_input("Ketik pertanyaanmu di sini..."):
             try:
                 # Prepare history for LangChain (Convert to Schema)
                 chat_history = []
-                for msg in st.session_state.messages:
+                for msg in st.session_state.chatbot_messages:
                     if msg["role"] == "user": 
                         chat_history.append(HumanMessage(content=msg["content"]))
                     elif msg["role"] == "assistant": 
@@ -253,8 +260,8 @@ if prompt := st.chat_input("Ketik pertanyaanmu di sini..."):
                     time.sleep(0.005) # Typing speed
                 message_placeholder.markdown(displayed_text) # Final render without cursor
 
-                # Save AI response to history
-                st.session_state.messages.append({"role": "assistant", "content": final_text})
+                # Save AI response to history (Unique Key)
+                st.session_state.chatbot_messages.append({"role": "assistant", "content": final_text})
                 logger.info("Response generated successfully.")
                 
                 # Force Rerun to sync state and prevent "ghosting" UI issues
@@ -268,4 +275,4 @@ if prompt := st.chat_input("Ketik pertanyaanmu di sini..."):
                 
                 error_msg = "Waduh, mesin PIKOPI lagi agak ngadat nih Kak (koneksi terputus atau error sistem). Coba tanya lagi pelan-pelan ya, atau refresh halamannya."
                 st.markdown(error_msg)
-                st.session_state.messages.append({"role": "assistant", "content": error_msg})
+                st.session_state.chatbot_messages.append({"role": "assistant", "content": error_msg})
