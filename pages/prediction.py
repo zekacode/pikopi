@@ -86,153 +86,174 @@ with col_h2:
 st.markdown("---")
 
 # ============================
-# Sidebar: Barista Control Panel
+# Default fitur utama
 # ============================
-with st.sidebar:
-    st.header("🎛️ Barista Panel")
-    st.info("Masukkan parameter kopi di sini.")
+DEFAULT_FEATURES = {
+    "Altitude": 0.0,
+    "Coffee Age": 0.0,
+    "Moisture Percentage": 0.0,
+    "Category One Defects": 0.0,
+    "Category Two Defects": 0.0,
+    "Quakers": 0.0,
+
+    # Sensori (0–10)
+    "Uniformity": 0.0,
+    "Clean Cup": 0.0,
+    "Sweetness": 0.0,
+    "Overall": 0.0,
+    "Flavor": 0.0,
+    "Aftertaste": 0.0,
+    "Balance": 0.0,
+    "Acidity": 0.0,
+    "Aroma": 0.0,
     
-    mode = st.selectbox("Pilih Mode Analisa:", ["Fisik", "Akurat"]).lower()
-    
-    # Tombol Reset dengan styling
-    if st.button("🔄 Reset Parameter"):
-        st.session_state.features = None
-        st.rerun()
+
+    # Kategorikal — default tetap boleh yg pertama
+    "Processing Method": "Natural / Dry",
+    "Variety": "Blend",
+}
+
+
+# numeric ranges (min, max)
+NUMERIC_RANGES = {
+    "Altitude": (0.0, 4000.0),
+    "Coffee Age": (0.0, 50.0),
+    "Moisture Percentage": (0.0, 100.0),
+    "Category One Defects": (0.0, 100.0),
+    "Category Two Defects": (0.0, 100.0),
+    "Quakers": (0.0, 100.0),
+
+    # sensori
+    "Uniformity": (0.0, 10.0),
+    "Overall": (0.0, 10.0),
+    "Flavor": (0.0, 10.0),
+    "Aftertaste": (0.0, 10.0),
+    "Balance": (0.0, 10.0),
+    "Acidity": (0.0, 10.0),
+    "Aroma": (0.0, 10.0),
+    }
+
+PROCESSING_OPTIONS = ["Natural / Dry", "Pulped natural / honey", "Washed / Wet"]
+
+VARIETY_OPTIONS = ["Gesha",
+    "Caturra",
+    "Typica",
+    "Bourbon",
+    "Catuai",
+    "Catimor",
+    "Ethiopian Heirlooms",
+    "SL34",
+    "Other"]
 
 # ============================
-# Default Features Logic
+# Inisialisasi session state
 # ============================
-def get_default_features(mode):
-    if mode == "fisik":
-        return {
-            "Altitude": 1200, "Coffee Age": 10, "Moisture Percentage": 11.0,
-            "Category One Defects": 1, "Category Two Defects": 2, "Quakers": 1,
-            "Processing Method": "Natural / Dry", "Variety": "Blend",
-        }
-    else:
-        return {
-            "Uniformity": 10.0, "Clean Cup": 10.0, "Sweetness": 10.0,
-            "Overall": 8.0, "Flavor": 8.0, "Aftertaste": 8.0,
-            "Balance": 8.0, "Acidity": 8.0, "Aroma": 8.0, "Body": 8.0,
-            "Processing Method": "Natural / Dry", "Variety": "Blend",
-        }
+if "features" not in st.session_state:
+    st.session_state.features = DEFAULT_FEATURES.copy()
 
-if "features" not in st.session_state or st.session_state.features is None:
-    st.session_state.features = get_default_features(mode)
+# Tombol reset
+if st.sidebar.button("🔄 Reset"):
+    # Reset semua fitur ke default
+    for key in st.session_state.features.keys():
+        st.session_state.features[key] = DEFAULT_FEATURES[key]
 
+    # Informasi ke user
+    st.sidebar.success("✅ Input telah di-reset ke default")
 # ============================
-# Input Form (Sidebar)
+# Sidebar Input
 # ============================
 input_data = {}
-with st.sidebar:
-    st.markdown("### 📝 Input Data")
-    for key, val in st.session_state.features.items():
-        if isinstance(val, float):
-            input_data[key] = st.number_input(key, value=val)
-        elif isinstance(val, int):
-            input_data[key] = st.number_input(key, value=val, step=1)
+for key, default_value in st.session_state.features.items():
+
+    # numeric input
+    if isinstance(default_value, (int, float)):
+        min_v, max_v = NUMERIC_RANGES.get(key, (0.0, 100000.0))
+        value = float(default_value)
+        value = max(min(value, max_v), min_v)
+        input_data[key] = st.sidebar.number_input(
+            key, value=value, min_value=min_v, max_value=max_v, format="%.2f"
+        )
+
+    # categorical
+    else:
+        if key == "Processing Method":
+            options = PROCESSING_OPTIONS
+        elif key == "Variety":
+            options = VARIETY_OPTIONS
         else:
-            if key == "Processing Method":
-                opts = ["Natural / Dry", "Pulped natural / honey", "Washed / Wet"]
-            else:
-                opts = ["Blend", "Catuai", "Other", "Red Bourbon,Caturra", "unknown"]
-            
-            # Safe index finding
-            idx = opts.index(val) if val in opts else 0
-            input_data[key] = st.selectbox(key, opts, index=idx)
+            options = [default_value]
+
+        try:
+            idx = options.index(default_value)
+        except:
+            idx = 0
+
+        input_data[key] = st.sidebar.selectbox(key, options, index=idx)
+
+# Simpan perubahan input ke state
+st.session_state.features = input_data.copy()
 
 # ============================
-# Load Model
+# Load model & preprocessor
 # ============================
-model, preprocessor = load_model_and_preprocessor(mode)
-if model is None or preprocessor is None:
-    st.error("❌ Model tidak ditemukan. Pastikan file .pkl ada di folder modules/prediction/models/")
+try:
+    model, preprocessor = load_model_and_preprocessor()
+except Exception as e:
+    st.error(f"❌ Gagal load model/preprocessor: {e}")
     st.stop()
 
-# ============================
-# Main Content: Prediction
-# ============================
 
-# Tombol Besar di Tengah
-col_space1, col_btn, col_space2 = st.columns([1, 2, 1])
-with col_btn:
-    predict_btn = st.button("☕ Analisa Kualitas Kopi Sekarang", use_container_width=True)
+# ============================
+# Prediksi
+# ============================
+if st.button("🔍 Prediksi Sekarang"):
+    try:
+        X = preprocessor.transform(input_df)
+        y_pred = float(model.predict(X)[0])
 
-if predict_btn:
-    with st.spinner("Sedang me-roasting data..."):
+        st.success(f"### 🎉 Prediksi Cupping Score: **{y_pred:.2f}**")
+
+        kategori = quality_category(y_pred)
+        rekomendasi = recommendation_from_category(kategori)
+
+        st.info(f"**Kategori:** {kategori}")
+        st.info(f"**Rekomendasi:** {rekomendasi}")
+
+    except Exception as e:
+        st.error(f"❌ Error saat prediksi: {e}")
+
+# ============================
+# Feature Importance
+# ============================
+st.markdown("---")
+st.header("📊 Feature Importance")
+
+try:
+    importances = None
+
+    if hasattr(model, "feature_importances_"):
+        importances = model.feature_importances_
+    elif hasattr(model, "coef_"):
+        importances = model.coef_.flatten()
+
+    if importances is not None:
         try:
-            # Preprocess & Predict
-            input_df = preprocess_single(input_data, mode=mode)
-            X = preprocessor.transform(input_df)
-            y_pred = model.predict(X)[0]
-            
-            kategori = quality_category(y_pred)
-            rekomendasi = recommendation_from_category(kategori)
+            feature_names = preprocessor.get_feature_names_out()
+            feature_names = [f.split("__")[-1] for f in feature_names]
+        except:
+            feature_names = list(input_df.columns)
 
-            # --- TAMPILAN HASIL (DASHBOARD STYLE) ---
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            # Container Hasil
-            with st.container():
-                st.markdown(f"""
-                <div class="result-card">
-                    <h2 style="text-align: center; margin-bottom: 0;">Hasil Prediksi Cupping Score</h2>
-                    <h1 style="text-align: center; font-size: 4em; margin: 0; color: #D4A373;">{y_pred:.2f}</h1>
-                    <h3 style="text-align: center; color: #E6D7C3;">Kategori: <span style="color: #F4A261;">{kategori}</span></h3>
-                </div>
-                """, unsafe_allow_html=True)
+        fi_df = pd.DataFrame({"Feature": feature_names, "Importance": importances})
+        fi_df = fi_df.sort_values("Importance")
 
-            # Rekomendasi
-            st.info(f"💡 **Saran Barista:** {rekomendasi}")
+        fig = px.bar(
+            fi_df,
+            x="Importance",
+            y="Feature",
+            title="Feature Importance",
+            orientation="h"
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
-            # --- FEATURE IMPORTANCE CHART ---
-            st.markdown("### 📊 Analisis Faktor Penentu")
-            
-            if hasattr(model, "feature_importances_"):
-                importances = model.feature_importances_
-            elif hasattr(model, "coef_"):
-                importances = model.coef_
-            else:
-                importances = None
-
-            if importances is not None:
-                feature_names = preprocessor.get_feature_names_out()
-                feature_names = [f.split("__")[-1] for f in feature_names]
-
-                fi_df = pd.DataFrame({"Faktor": feature_names, "Pengaruh": importances})
-
-                if mode == "akurat":
-                    fi_df = fi_df[~fi_df["Faktor"].str.startswith("Processing Method_")]
-                    fi_df = fi_df[~fi_df["Faktor"].str.startswith("Variety_")]
-
-                fi_df = fi_df.sort_values("Pengaruh", ascending=True)
-
-                # Plotly dengan Warna Tema Kopi
-                fig = px.bar(
-                    fi_df, x="Pengaruh", y="Faktor", orientation='h',
-                    text="Pengaruh",
-                    color_discrete_sequence=['#D4A373'] # Warna Emas/Kopi
-                )
-                
-                # Update Layout agar transparan dan teks terlihat di dark mode
-                fig.update_layout(
-                    plot_bgcolor='rgba(0,0,0,0)',
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font=dict(color='#E6D7C3'),
-                    xaxis=dict(showgrid=False),
-                    yaxis=dict(showgrid=False)
-                )
-                fig.update_traces(texttemplate='%{text:.3f}', textposition='outside')
-                
-                st.plotly_chart(fig, use_container_width=True)
-
-        except Exception as e:
-            st.error(f"❌ Terjadi kesalahan: {e}")
-
-else:
-    # Tampilan awal sebelum prediksi (Placeholder)
-    st.markdown("""
-    <div style="text-align: center; padding: 50px; color: #888;">
-        <h4>👈 Masukkan data kopi di panel sebelah kiri, lalu klik tombol Analisa.</h4>
-    </div>
-    """, unsafe_allow_html=True)
+except Exception as e:
+    st.error(f"❌ Gagal memuat feature importance: {e}")
