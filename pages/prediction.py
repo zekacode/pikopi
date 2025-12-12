@@ -27,58 +27,20 @@ st.set_page_config(page_title="Prediksi Cupping Score", layout="wide", page_icon
 # Custom CSS untuk Tema Kopi
 st.markdown("""
 <style>
-    /* Warna Background Utama sudah diatur di config.toml, kita atur elemen spesifik */
-    
-    /* Judul H1 */
-    h1 {
-        color: #D4A373 !important; /* Warna Emas/Karamel */
-        font-family: 'Helvetica', sans-serif;
-        font-weight: 700;
-    }
-    
-    /* Sub-header H2, H3 */
-    h2, h3 {
-        color: #E6D7C3 !important; /* Warna Krem */
-    }
-
-    /* Tombol Prediksi (Primary Button) */
+    h1 { color: #D4A373 !important; font-family: 'Helvetica', sans-serif; font-weight: 700; }
+    h2, h3 { color: #E6D7C3 !important; }
     div.stButton > button:first-child {
-        background-color: #D4A373;
-        color: #2C221E;
-        font-weight: bold;
-        border-radius: 10px;
-        border: none;
-        padding: 10px 24px;
-        transition: all 0.3s ease;
+        background-color: #D4A373; color: #2C221E; font-weight: bold; border-radius: 10px; border: none; padding: 10px 24px; transition: all 0.3s ease;
     }
-    div.stButton > button:first-child:hover {
-        background-color: #E9C46A;
-        color: #1E1614;
-        transform: scale(1.02);
-    }
-
-    /* Card Hasil (Container) */
-    .result-card {
-        background-color: #2C221E;
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #D4A373;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    }
-    
-    /* Highlight Text */
-    .highlight {
-        color: #D4A373;
-        font-weight: bold;
-    }
+    div.stButton > button:first-child:hover { background-color: #E9C46A; color: #1E1614; transform: scale(1.02); }
+    .result-card { background-color: #2C221E; padding: 20px; border-radius: 15px; border: 1px solid #D4A373; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
 </style>
 """, unsafe_allow_html=True)
 
 # --- HEADER ---
 col_h1, col_h2 = st.columns([1, 5])
 with col_h1:
-    st.image("https://cdn-icons-png.flaticon.com/512/2935/2935413.png", width=80) # Ikon Biji Kopi
+    st.image("https://cdn-icons-png.flaticon.com/512/2935/2935413.png", width=80)
 with col_h2:
     st.title("AI Coffee Cupping Predictor")
     st.markdown("Prediksi kualitas dan skor kopi Anda menggunakan kecerdasan buatan.")
@@ -86,174 +48,151 @@ with col_h2:
 st.markdown("---")
 
 # ============================
-# Default fitur utama
+# Sidebar: Kontrol & Input
 # ============================
-DEFAULT_FEATURES = {
-    "Altitude": 0.0,
-    "Coffee Age": 0.0,
-    "Moisture Percentage": 0.0,
-    "Category One Defects": 0.0,
-    "Category Two Defects": 0.0,
-    "Quakers": 0.0,
-
-    # Sensori (0–10)
-    "Uniformity": 0.0,
-    "Clean Cup": 0.0,
-    "Sweetness": 0.0,
-    "Overall": 0.0,
-    "Flavor": 0.0,
-    "Aftertaste": 0.0,
-    "Balance": 0.0,
-    "Acidity": 0.0,
-    "Aroma": 0.0,
+with st.sidebar:
+    st.header("🎛️ Barista Panel")
+    mode = st.selectbox("Pilih Mode Analisa:", ["Fisik", "Akurat"]).lower()
     
+    if st.button("🔄 Reset Parameter"):
+        st.session_state.features = None
+        st.rerun()
 
-    # Kategorikal — default tetap boleh yg pertama
-    "Processing Method": "Natural / Dry",
-    "Variety": "Blend",
-}
-
-
-# numeric ranges (min, max)
-NUMERIC_RANGES = {
-    "Altitude": (0.0, 4000.0),
-    "Coffee Age": (0.0, 50.0),
-    "Moisture Percentage": (0.0, 100.0),
-    "Category One Defects": (0.0, 100.0),
-    "Category Two Defects": (0.0, 100.0),
-    "Quakers": (0.0, 100.0),
-
-    # sensori
-    "Uniformity": (0.0, 10.0),
-    "Overall": (0.0, 10.0),
-    "Flavor": (0.0, 10.0),
-    "Aftertaste": (0.0, 10.0),
-    "Balance": (0.0, 10.0),
-    "Acidity": (0.0, 10.0),
-    "Aroma": (0.0, 10.0),
-    }
-
-PROCESSING_OPTIONS = ["Natural / Dry", "Pulped natural / honey", "Washed / Wet"]
-
-VARIETY_OPTIONS = ["Gesha",
-    "Caturra",
-    "Typica",
-    "Bourbon",
-    "Catuai",
-    "Catimor",
-    "Ethiopian Heirlooms",
-    "SL34",
-    "Other"]
-
-# ============================
-# Inisialisasi session state
-# ============================
-if "features" not in st.session_state:
-    st.session_state.features = DEFAULT_FEATURES.copy()
-
-# Tombol reset
-if st.sidebar.button("🔄 Reset"):
-    # Reset semua fitur ke default
-    for key in st.session_state.features.keys():
-        st.session_state.features[key] = DEFAULT_FEATURES[key]
-
-    # Informasi ke user
-    st.sidebar.success("✅ Input telah di-reset ke default")
-# ============================
-# Sidebar Input
-# ============================
-input_data = {}
-for key, default_value in st.session_state.features.items():
-
-    # numeric input
-    if isinstance(default_value, (int, float)):
-        min_v, max_v = NUMERIC_RANGES.get(key, (0.0, 100000.0))
-        value = float(default_value)
-        value = max(min(value, max_v), min_v)
-        input_data[key] = st.sidebar.number_input(
-            key, value=value, min_value=min_v, max_value=max_v, format="%.2f"
-        )
-
-    # categorical
+# --- Default Features Logic ---
+def get_default_features(mode):
+    if mode == "fisik":
+        return {
+            "Altitude": 1200.0, "Coffee Age": 1.0, "Moisture Percentage": 11.0,
+            "Category One Defects": 0, "Category Two Defects": 5, "Quakers": 0,
+            "Processing Method": "Natural / Dry", "Variety": "Blend",
+        }
     else:
-        if key == "Processing Method":
-            options = PROCESSING_OPTIONS
-        elif key == "Variety":
-            options = VARIETY_OPTIONS
+        return {
+            "Uniformity": 10.0, "Clean Cup": 10.0, "Sweetness": 10.0,
+            "Overall": 8.0, "Flavor": 8.0, "Aftertaste": 8.0,
+            "Balance": 8.0, "Acidity": 8.0, "Aroma": 8.0, "Body": 8.0,
+            "Processing Method": "Natural / Dry", "Variety": "Blend",
+        }
+
+if "features" not in st.session_state or st.session_state.features is None:
+    st.session_state.features = get_default_features(mode)
+
+# --- Input Form ---
+input_data = {}
+with st.sidebar:
+    st.markdown("### 📝 Input Data")
+    current_defaults = get_default_features(mode)
+    
+    for key, val in current_defaults.items():
+        if isinstance(val, float):
+            input_data[key] = st.number_input(key, value=val)
+        elif isinstance(val, int):
+            input_data[key] = st.number_input(key, value=val, step=1)
         else:
-            options = [default_value]
-
-        try:
-            idx = options.index(default_value)
-        except:
-            idx = 0
-
-        input_data[key] = st.sidebar.selectbox(key, options, index=idx)
-
-# Simpan perubahan input ke state
-st.session_state.features = input_data.copy()
+            if key == "Processing Method":
+                opts = ["Natural / Dry", "Pulped natural / honey", "Washed / Wet"]
+            else:
+                opts = ["Blend", "Catuai", "Other", "Red Bourbon,Caturra", "unknown"]
+            idx = opts.index(val) if val in opts else 0
+            input_data[key] = st.selectbox(key, opts, index=idx)
 
 # ============================
-# Load model & preprocessor
+# Load Model (Sesuai Mode)
 # ============================
-try:
-    model, preprocessor = load_model_and_preprocessor()
-except Exception as e:
-    st.error(f"❌ Gagal load model/preprocessor: {e}")
+model, preprocessor = load_model_and_preprocessor(mode)
+
+if model is None or preprocessor is None:
+    st.error(f"❌ Gagal memuat model untuk mode '{mode}'. Pastikan file .pkl ada di folder modules/prediction/models/")
     st.stop()
 
-
 # ============================
-# Prediksi
+# PERBAIKAN: PROSES DATA SEBELUM TOMBOL
 # ============================
-if st.button("🔍 Prediksi Sekarang"):
-    try:
-        X = preprocessor.transform(input_df)
-        y_pred = float(model.predict(X)[0])
-
-        st.success(f"### 🎉 Prediksi Cupping Score: **{y_pred:.2f}**")
-
-        kategori = quality_category(y_pred)
-        rekomendasi = recommendation_from_category(kategori)
-
-        st.info(f"**Kategori:** {kategori}")
-        st.info(f"**Rekomendasi:** {rekomendasi}")
-
-    except Exception as e:
-        st.error(f"❌ Error saat prediksi: {e}")
-
-# ============================
-# Feature Importance
-# ============================
-st.markdown("---")
-st.header("📊 Feature Importance")
-
 try:
-    importances = None
-
-    if hasattr(model, "feature_importances_"):
-        importances = model.feature_importances_
-    elif hasattr(model, "coef_"):
-        importances = model.coef_.flatten()
-
-    if importances is not None:
-        try:
-            feature_names = preprocessor.get_feature_names_out()
-            feature_names = [f.split("__")[-1] for f in feature_names]
-        except:
-            feature_names = list(input_df.columns)
-
-        fi_df = pd.DataFrame({"Feature": feature_names, "Importance": importances})
-        fi_df = fi_df.sort_values("Importance")
-
-        fig = px.bar(
-            fi_df,
-            x="Importance",
-            y="Feature",
-            title="Feature Importance",
-            orientation="h"
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
+    input_df = preprocess_single(input_data, mode=mode)
 except Exception as e:
-    st.error(f"❌ Gagal memuat feature importance: {e}")
+    st.error(f"Gagal memproses input data: {e}")
+    st.stop()
+
+# ============================
+# Main Content: Prediction
+# ============================
+col_space1, col_btn, col_space2 = st.columns([1, 2, 1])
+with col_btn:
+    predict_btn = st.button("☕ Analisa Kualitas Kopi Sekarang", use_container_width=True)
+
+if predict_btn:
+    with st.spinner("Sedang me-roasting data..."):
+        try:
+            # 1. Transform pakai Preprocessor
+            X = preprocessor.transform(input_df)
+            
+            # 2. Predict
+            y_pred = model.predict(X)[0]
+            
+            kategori = quality_category(y_pred)
+            rekomendasi = recommendation_from_category(kategori)
+
+            # --- TAMPILAN HASIL ---
+            st.markdown("<br>", unsafe_allow_html=True)
+            with st.container():
+                st.markdown(f"""
+                <div class="result-card">
+                    <h2 style="text-align: center; margin-bottom: 0;">Hasil Prediksi Cupping Score</h2>
+                    <h1 style="text-align: center; font-size: 4em; margin: 0; color: #D4A373;">{y_pred:.2f}</h1>
+                    <h3 style="text-align: center; color: #E6D7C3;">Kategori: <span style="color: #F4A261;">{kategori}</span></h3>
+                </div>
+                """, unsafe_allow_html=True)
+
+            st.info(f"💡 **Saran Barista:** {rekomendasi}")
+
+            # --- FEATURE IMPORTANCE ---
+            st.markdown("### 📊 Analisis Faktor Penentu")
+            
+            importances = None
+            if hasattr(model, "feature_importances_"):
+                importances = model.feature_importances_
+            elif hasattr(model, "coef_"):
+                importances = model.coef_
+                if len(importances.shape) > 1:
+                    importances = importances.flatten()
+
+            if importances is not None:
+                try:
+                    feature_names = preprocessor.get_feature_names_out()
+                    feature_names = [f.split("__")[-1] for f in feature_names]
+
+                    fi_df = pd.DataFrame({"Faktor": feature_names, "Pengaruh": importances})
+
+                    if mode == "akurat":
+                        fi_df = fi_df[~fi_df["Faktor"].str.startswith("Processing Method_")]
+                        fi_df = fi_df[~fi_df["Faktor"].str.startswith("Variety_")]
+
+                    fi_df = fi_df.sort_values("Pengaruh", ascending=True)
+
+                    fig = px.bar(
+                        fi_df, x="Pengaruh", y="Faktor", orientation='h',
+                        text="Pengaruh",
+                        color_discrete_sequence=['#D4A373']
+                    )
+                    fig.update_layout(
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        font=dict(color='#E6D7C3'),
+                        xaxis=dict(showgrid=False),
+                        yaxis=dict(showgrid=False)
+                    )
+                    fig.update_traces(texttemplate='%{text:.3f}', textposition='outside')
+                    st.plotly_chart(fig, use_container_width=True)
+                except Exception as e:
+                    st.warning(f"Gagal menampilkan grafik importance: {e}")
+
+        except Exception as e:
+            st.error(f"❌ Terjadi kesalahan saat prediksi: {e}")
+
+else:
+    st.markdown("""
+    <div style="text-align: center; padding: 50px; color: #888;">
+        <h4>👈 Masukkan data kopi di panel sebelah kiri, lalu klik tombol Analisa.</h4>
+    </div>
+    """, unsafe_allow_html=True)
