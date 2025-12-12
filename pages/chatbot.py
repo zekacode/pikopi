@@ -276,3 +276,4 @@ if prompt := st.chat_input("Ketik pertanyaanmu di sini..."):
                 error_msg = "Waduh, mesin PIKOPI lagi agak ngadat nih Kak (koneksi terputus atau error sistem). Coba tanya lagi pelan-pelan ya, atau refresh halamannya."
                 st.markdown(error_msg)
                 st.session_state.chatbot_messages.append({"role": "assistant", "content": error_msg})
+                
